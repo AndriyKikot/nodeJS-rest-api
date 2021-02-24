@@ -63,7 +63,9 @@ const updateContact = async (contactId, body) => {
     const allContacts = await listContacts();
     const contactIndex = allContacts.findIndex(({ id }) => String(id) === contactId);
 
-    if (contactIndex === -1) return;
+    if (contactIndex === -1) {
+      return
+    };
     allContacts[contactIndex] = { ...allContacts[contactIndex], ...body };
 
     const stringifiedData = JSON.stringify(allContacts, null, 2);
