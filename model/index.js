@@ -61,16 +61,15 @@ const addContact = async (body) => {
 const updateContact = async (contactId, body) => {
   try {
     const allContacts = await listContacts();
-    const findedContact = allContacts.find((contact) => String(contact.id) === contactId);
+    const contactIndex = allContacts.findIndex(({ id }) => String(id) === contactId);
 
-    const newContact = { ...findedContact, ...body };
-    const mappedContacts = contacts.map((item) =>
-      String(item.id) === contactId ? newContact : item);
+    if (contactIndex === -1) return;
+    allContacts[contactIndex] = { ...allContacts[contactIndex], ...body };
 
-    const stringifiedData = JSON.stringify(mappedContacts, null, 2);
+    const stringifiedData = JSON.stringify(allContacts, null, 2);
     await fs.writeFile(contactsFilePath, stringifiedData, "utf8");
 
-    return newContact;
+    return allContacts[contactIndex];
   } catch (error) {
     console.log(error);
   }
