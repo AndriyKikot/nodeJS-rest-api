@@ -1,12 +1,12 @@
 const Contact = require('./schemas/contact');
 
 const listContacts = async () => {
-  const result = await Contact.find({})
+  const result = await Contact.find({}, { __v: 0 })
   return result;
 };
 
 const getContactById = async (contactId) => {
-  const result = await Contact.find({ _id: contactId });
+  const result = await Contact.findOne({ _id: contactId }).select("-__v");
   return result;
 };
 

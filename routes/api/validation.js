@@ -6,7 +6,10 @@ const schemaCreateContact = Joi.object({
     phone: Joi.string()
         .pattern(/^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/)
         .required(),
-}).min(1);
+    subscription: Joi.string().optional(),
+    password: Joi.string().optional(),
+    token: Joi.string().optional(),
+});
 
 const schemaUpdateContact = Joi.object({
     name: Joi.string().min(3).max(20).optional(),
@@ -14,7 +17,10 @@ const schemaUpdateContact = Joi.object({
     phone: Joi.string()
         .pattern(/^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/)
         .optional(),
-});
+    subscription: Joi.string().optional(),
+    password: Joi.string().optional(),
+    token: Joi.string().optional(),
+}).min(1);
 
 const validate = (schema, obj, next) => {
     const { error } = schema.validate(obj);
