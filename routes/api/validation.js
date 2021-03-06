@@ -6,7 +6,7 @@ const schemaCreateContact = Joi.object({
     phone: Joi.string()
         .pattern(/^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/)
         .required(),
-});
+}).min(1);
 
 const schemaUpdateContact = Joi.object({
     name: Joi.string().min(3).max(20).optional(),
