@@ -1,7 +1,6 @@
-const mongoose = require('mongoose');
-const { Schema, model } = mongoose;
+const { Schema, model } = require('mongoose');
 const bcrypt = require('bcryptjs');
-const { Subscription } = require('../../helpers/constans');
+const { Subscription } = require('../../helpers/constants');
 const SALT_WORK_FACTOR = 8;
 
 
@@ -9,16 +8,16 @@ const userSchema = new Schema(
     {
         email: {
             type: String,
-            require: [true, 'Email is required'],
+            required: [true, 'Email is required'],
             unique: true,
             validate(value) {
-                const isValid = /\S+@\S+\.S+/
+                const isValid = /\S+@\S+\.\S+/
                 return isValid.test(String(value).toLowerCase())
             },
         },
         password: {
             type: String,
-            require: [true, 'Password is required'],
+            required: [true, 'Password is required'],
         },
         subscription: {
             type: String,

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema, model, SchemaTypes } = mongoose;
-const { Subscription } = require('../../helpers/constans');
+const { Subscription } = require('../../helpers/constants');
 
 const contactSchema = new Schema(
     {
@@ -13,7 +13,7 @@ const contactSchema = new Schema(
             required: [true, 'Email is required'],
             unique: true,
             validate(value) {
-                const isValid = /\S+@\S+\.S+/
+                const isValid = /\S+@\S+\.\S+/
                 return isValid.test(String(value).toLowerCase())
             },
         },

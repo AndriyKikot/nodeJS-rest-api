@@ -4,17 +4,19 @@ const router = express.Router();
 const contactsContreller = require('../../../controllers/contacts.js');
 const validate = require('./validation.js');
 const validateId = require('./validationId.js');
+const guard = require('../../../helpers/guard');
 
-router.get("/", contactsContreller.listContacts);
+router.get("/", guard, contactsContreller.listContacts);
 
-router.get("/:contactId", validateId, contactsContreller.getContactById);
+router.get("/:contactId", guard, validateId, contactsContreller.getContactById);
 
-router.post("/", validate.createContact, contactsContreller.addContact);
+router.post("/", guard, validate.createContact, contactsContreller.addContact);
 
-router.delete("/:contactId", validateId, contactsContreller.removeContact);
+router.delete("/:contactId", guard, validateId, contactsContreller.removeContact);
 
 router.patch(
   "/:contactId",
+  guard,
   validateId,
   validate.updateContact,
   contactsContreller.updateContact
