@@ -58,26 +58,74 @@ const login = async (req, res, next) => {
                 },
             },
         });
-    } catch (e) {
-        if (e.name === 'TypeError') {
+    } catch (error) {
+        if (error.name === 'TypeError') {
             return next({
                 status: HttpCode.BAD_REQUEST,
                 message: 'Bad request',
             });
         }
-        next(e);
+        next(error);
     }
 };
 
 const logout = async (req, res, _next) => {
     const id = req.user.id;
     await Users.updateToken(id, null);
-    return res.status(HttpCode.NO_CONTENT).json({ message: 'Nothing' });
+    return res.status(HttpCode.NO_CONTENT).json();
+};
+
+const currentUser = async (req, res, next) => {
+    try {
+        const id = req.user.id;
+        const user = await Users.findById(id);
+        return res.status(HttpCode.OK).json({
+            status: 'success',
+            code: HttpCode.OK,
+            data: {
+                user: {
+                    email: user.email,
+                    subscription: user.subscription,
+                },
+            },
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const updateSub = async (req, res, next) => {
+    try {
+        const id = req.user.id;
+        const subscription = req.body.subscription;
+        await Users.updateSubUser(id, subscription);
+        const user = await Users.findById(id);
+        return res.json({
+            status: 'success',
+            code: HttpCode.OK,
+            data: {
+                user: {
+                    email: user.email,
+                    subscription: user.subscription,
+                },
+            },
+        });
+    } catch (error) {
+        if (error.name === 'CastError') {
+            return next({
+                status: HttpCode.NOT_FOUND,
+                message: 'Not Found',
+            });
+        }
+        next(error);
+    }
 };
 
 
 module.exports = {
     register,
     login,
-    logout
+    logout,
+    currentUser,
+    updateSub
 }

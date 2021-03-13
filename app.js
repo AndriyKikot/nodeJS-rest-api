@@ -15,7 +15,7 @@ const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 app.use(helmet());
 app.use(logger(formatsLogger));
 app.use(cors());
-app.use(express.json({ limit: 10000 }));
+app.use(express.json({ limit: 10000 })); // 10000 - bytes
 
 app.use('/api/', createAccountLimiter);
 app.use('/api/users', usersRouter);

@@ -13,6 +13,6 @@ function validationId(req, res, next) {
         });
     }
     next();
-}
+};
 
 module.exports = validationId;
