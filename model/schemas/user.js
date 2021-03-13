@@ -1,14 +1,11 @@
-const mongoose = require('mongoose');
-const { Schema, model, SchemaTypes } = mongoose;
-const mongoosePaginate = require("mongoose-paginate-v2");
+const { Schema, model } = require('mongoose');
+const bcrypt = require('bcryptjs');
 const { Subscription } = require('../../helpers/constants');
+const SALT_WORK_FACTOR = 8;
 
-const contactSchema = new Schema(
+
+const userSchema = new Schema(
     {
-        name: {
-            type: String,
-            required: [true, 'Name is required'],
-        },
         email: {
             type: String,
             required: [true, 'Email is required'],
@@ -18,10 +15,9 @@ const contactSchema = new Schema(
                 return isValid.test(String(value).toLowerCase())
             },
         },
-        phone: {
+        password: {
             type: String,
-            required: [true, 'Phone is required'],
-            unique: true,
+            required: [true, 'Password is required'],
         },
         subscription: {
             type: String,
@@ -31,23 +27,28 @@ const contactSchema = new Schema(
             },
             default: Subscription.FREE
         },
-        password: {
-            type: String,
-            default: 'password',
-        },
         token: {
             type: String,
-            default: '',
+            default: null,
         },
-        owner: {
-            type: SchemaTypes.ObjectId,
-            ref: 'user'
-        },
+
     },
     { timestamps: true }
 );
 
-contactSchema.plugin(mongoosePaginate);
-const Contact = model('contact', contactSchema);
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) {
+        return next();
+    };
+    const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
+    this.password = await bcrypt.hash(this.password, salt, null);
+    next();
+});
 
-module.exports = Contact;
+userSchema.methods.validPassword = async function (password) {
+    return await bcrypt.compare(password, this.password);
+};
+
+const User = model('user', userSchema);
+
+module.exports = User;
