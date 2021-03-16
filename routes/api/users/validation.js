@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const { HTTP_CODE } = require("../../../helpers/constants");
+const { HttpCode } = require("../../../helpers/constants");
 
 const schemaRegister = Joi.object({
     name: Joi.string().min(2).max(20),
@@ -34,7 +34,7 @@ const validate = (schema, obj, next) => {
     if (error) {
         const [{ message }] = error.details;
         return next({
-            status: HTTP_CODE.BAD_REQUEST,
+            status: HttpCode.BAD_REQUEST,
             message: `Filed: ${message.replace(/"/g, "")}`,
         });
     }
@@ -51,4 +51,16 @@ module.exports.login = (req, res, next) => {
 
 module.exports.updateSub = (req, res, next) => {
     return validate(schemaUpdateSub, req.body, next);
+};
+
+module.exports.uploadAvatar = (req, res, next) => {
+    if (!req.file) {
+        return res.status(HttpCode.BAD_REQUEST).json({
+            status: 'error',
+            code: HttpCode.BAD_REQUEST,
+            data: 'Bad request',
+            message: 'Field of avatar with file not found',
+        })
+    }
+    next()
 };

@@ -11,7 +11,7 @@ const guard = (req, res, next) => {
                 message: 'Not authorized',
             });
         }
-        const [, token] = header.split(' ');
+        const token = header?.split(' ')[1];
         if (!user || err || token !== user.token) {
             return res.status(HttpCode.FORBIDDEN).json({
                 status: 'error',
