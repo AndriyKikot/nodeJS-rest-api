@@ -50,7 +50,7 @@ describe('Testing the route api/contacts', () => {
                 .post(`/api/contacts`)
                 .set('Authorization', `Bearer ${token}`)
                 .send(newContact)
-                .set('Accept', 'application/json')
+                .set('Accept', 'application/json');
             expect(res.status).toEqual(201);
             expect(res.body).toBeDefined();
             idNewContact = res.body.data.contact._id;

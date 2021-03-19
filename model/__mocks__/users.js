@@ -16,7 +16,7 @@ const create = jest.fn(({ email, password }) => {
     const newUser = {
         email,
         password: pass,
-        _id: '604780b0a33f593b5866d7ad',
+        _id: '6053813c233be106f4429ded',
         validPassword: function (pass) {
             return bcrypt.compareSync(pass, this.password);
         },

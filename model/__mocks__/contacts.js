@@ -10,7 +10,7 @@ const getContactById = jest.fn((contactId, userId) => {
 });
 
 const addContact = jest.fn((body) => {
-    const newContact = { ...body, _id: '5f8382425ba83a4f1829ca5d' };
+    const newContact = { ...body, _id: '5f8382425ba83a4f1829ca5z' };
     contacts.push(newContact);
     return newContact;
 });
