@@ -8,6 +8,7 @@ const config = require('../config/email.json');
 class EmailService {
     #sender = sgMail;
     #GenerateTemplate = Mailgen;
+
     constructor(env) {
         switch (env) {
             case 'development':
@@ -27,6 +28,7 @@ class EmailService {
                 break;
         }
     };
+
     #createTemplate(verifyToken, name = 'Guest') {
         const mailGenerator = new this.#GenerateTemplate({
             theme: 'cerberus',
@@ -54,7 +56,8 @@ class EmailService {
         };
         return mailGenerator.generate(template);
     };
-    sendEmail(verifyToken, email, name) {
+
+    async sendEmail(verifyToken, email, name) {
         const emailBody = this.#createTemplate(verifyToken, name);
         this.#sender.setApiKey(process.env.SENDGRID_API_KEY);
         const msg = {
