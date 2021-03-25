@@ -42,9 +42,9 @@ class EmailService {
         const template = {
             body: {
                 name,
-                intro: 'Welcome to Mailgen! We\'re very excited to have you on board.',
+                intro: 'Welcome to Phonebook!',
                 action: {
-                    instructions: 'To get started with Mailgen, please click here:',
+                    instructions: 'For confirm your account, please click here:',
                     button: {
                         color: '#22BC66', // Optional action button color
                         text: 'Confirm your account',
@@ -63,10 +63,10 @@ class EmailService {
         const msg = {
             to: email,
             from: 'andray838@gmail.com', // Use the email address or domain you verified above
-            subject: 'Подтверждение регистрации',
+            subject: 'Confirmation of registration',
             html: emailBody,
         };
-        //ES6
+
         await this.#sender.send(msg);
     }
 };
