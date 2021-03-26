@@ -17,6 +17,8 @@ router.get('/current', guard, usersController.currentUser);
 
 router.patch('/current', guard, validate.updateSub, usersController.updateSub);
 
-router.patch('/avatars', [guard, upload.single('avatar'), validate.uploadAvatar], usersController.avatars)
+router.patch('/avatars', [guard, upload.single('avatar'), validate.uploadAvatar], usersController.avatars);
+
+router.get('/verify/:token', usersController.verify)
 
 module.exports = router;
